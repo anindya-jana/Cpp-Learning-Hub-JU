@@ -1,0 +1,568 @@
+
+<h2 class="sr-only">Interactive C++ Learning Hub — lessons and quizzes on pointers, references, inheritance, polymorphism and more</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+#app{display:flex;height:620px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+#sb{width:195px;border-right:0.5px solid var(--color-border-tertiary);overflow-y:auto;flex-shrink:0;background:var(--color-background-secondary);display:flex;flex-direction:column}
+#sb h3{font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:10px 12px 4px;text-transform:uppercase;letter-spacing:.08em}
+.tb{display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;text-align:left;background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--color-text-secondary);border-left:2px solid transparent}
+.tb:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+.tb.active{background:var(--color-background-primary);color:var(--color-text-primary);border-left-color:#378ADD;font-weight:500}
+.tb i{font-size:14px;flex-shrink:0}
+#main{flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);flex-shrink:0}
+#topbar-title{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+.abtn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:12px;cursor:pointer}
+.abtn:hover{color:var(--color-text-primary)}
+.abtn.p{background:#185FA5;color:#fff;border-color:#185FA5}
+.abtn.p:hover{background:#0C447C}
+.score-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary)}
+#content{flex:1;overflow-y:auto;padding:16px}
+.lesson h2{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.lesson .sub{font-size:12px;color:var(--color-text-tertiary);margin-bottom:14px}
+.lesson p{font-size:13.5px;line-height:1.75;color:var(--color-text-primary);margin-bottom:10px}
+.lesson pre{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px;overflow-x:auto;margin:10px 0 14px;font-family:var(--font-mono);font-size:12px;line-height:1.65;color:var(--color-text-primary)}
+.lesson .note{background:var(--color-background-info);border-left:3px solid #378ADD;padding:8px 12px;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;font-size:13px;color:var(--color-text-info);margin:10px 0}
+.lesson .warn{background:var(--color-background-warning);border-left:3px solid #BA7517;padding:8px 12px;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;font-size:13px;color:var(--color-text-warning);margin:10px 0}
+.section-hdr{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 6px;border-top:0.5px solid var(--color-border-tertiary);padding-top:10px}
+.qbox{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:16px;background:var(--color-background-secondary)}
+.qnum{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px;font-weight:500}
+.qtxt{font-size:13.5px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;line-height:1.5}
+.opt{display:block;width:100%;text-align:left;padding:7px 12px;margin:4px 0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:13px;cursor:pointer;font-family:var(--font-sans)}
+.opt:hover:not(:disabled){border-color:#378ADD;color:var(--color-text-primary)}
+.opt.ok{background:var(--color-background-success);border-color:var(--color-border-success);color:var(--color-text-success)}
+.opt.bad{background:var(--color-background-danger);border-color:var(--color-border-danger);color:var(--color-text-danger)}
+.exp{margin-top:10px;font-size:12.5px;line-height:1.6;padding:8px 10px;background:var(--color-background-primary);border-radius:var(--border-radius-md);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);display:none}
+.exp code{font-family:var(--font-mono);font-size:11.5px;background:var(--color-background-secondary);padding:1px 4px;border-radius:3px}
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;color:var(--color-text-tertiary)}
+.ph i{font-size:38px}
+.ph p{font-size:13px}
+.tag{display:inline-block;padding:2px 7px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;margin-right:4px;margin-bottom:6px}
+.tag.blue{background:var(--color-background-info);color:var(--color-text-info)}
+.tag.green{background:var(--color-background-success);color:var(--color-text-success)}
+.tag.amber{background:var(--color-background-warning);color:var(--color-text-warning)}
+</style>
+
+<div id="app">
+<div id="sb">
+  <h3>Lessons</h3>
+  <button class="tb" data-t="ptr" onclick="show(this)"><i class="ti ti-pointer" aria-hidden="true"></i>Pointers *</button>
+  <button class="tb" data-t="ref" onclick="show(this)"><i class="ti ti-link" aria-hidden="true"></i>References &amp;</button>
+  <button class="tb" data-t="addr" onclick="show(this)"><i class="ti ti-map-pin" aria-hidden="true"></i>Addresses &amp; Memory</button>
+  <button class="tb" data-t="thisptr" onclick="show(this)"><i class="ti ti-circle-dot" aria-hidden="true"></i>'this' Pointer</button>
+  <button class="tb" data-t="dyn" onclick="show(this)"><i class="ti ti-database" aria-hidden="true"></i>Dynamic Memory</button>
+  <button class="tb" data-t="inh" onclick="show(this)"><i class="ti ti-git-branch" aria-hidden="true"></i>Inheritance</button>
+  <button class="tb" data-t="poly" onclick="show(this)"><i class="ti ti-transform" aria-hidden="true"></i>Polymorphism</button>
+  <button class="tb" data-t="vtable" onclick="show(this)"><i class="ti ti-table" aria-hidden="true"></i>vtable &amp; virtual</button>
+  <h3 style="margin-top:6px">Quizzes</h3>
+  <button class="tb" data-t="q_ptr" onclick="show(this)"><i class="ti ti-help-circle" aria-hidden="true"></i>Quiz: Pointers</button>
+  <button class="tb" data-t="q_mem" onclick="show(this)"><i class="ti ti-help-circle" aria-hidden="true"></i>Quiz: Memory</button>
+  <button class="tb" data-t="q_oop" onclick="show(this)"><i class="ti ti-help-circle" aria-hidden="true"></i>Quiz: OOP</button>
+  <button class="tb" data-t="q_mix" onclick="show(this)"><i class="ti ti-trophy" aria-hidden="true"></i>Mixed Challenge</button>
+</div>
+<div id="main">
+  <div id="topbar">
+    <span id="topbar-title">C++ Deep Dive</span>
+    <div class="score-pill" id="sp" style="display:none"><i class="ti ti-star" aria-hidden="true"></i>Score: <strong id="sd">0 / 0</strong></div>
+    <button class="abtn p" id="askbtn" onclick="sendPrompt('I want to ask a follow-up question about this C++ topic')"><i class="ti ti-message" aria-hidden="true"></i>Ask Claude ↗</button>
+  </div>
+  <div id="content"><div class="ph"><i class="ti ti-cpu" aria-hidden="true"></i><p>Pick a lesson or quiz from the sidebar</p></div></div>
+</div>
+</div>
+
+<script>
+const L = {
+ptr:`<div class="lesson">
+<div class="tag blue">Core concept</div><div class="tag amber">Memory</div>
+<h2>Pointers — <code>*</code></h2>
+<div class="sub">A pointer stores the memory address of another variable</div>
+<p>Think of memory as a street of numbered houses. A pointer holds a house <em>number</em> — not the house itself.</p>
+<div class="section-hdr">Declaration &amp; Basic Use</div>
+<pre>int x = 42;
+int* ptr = &amp;x;   // ptr holds the ADDRESS of x
+
+cout &lt;&lt; x;        // 42        — the value
+cout &lt;&lt; &amp;x;       // 0x61ff08  — address of x
+cout &lt;&lt; ptr;      // 0x61ff08  — same address
+cout &lt;&lt; *ptr;     // 42        — dereference: VALUE at that address</pre>
+<div class="note"><strong>*</strong> has two jobs: <br>1. In a <em>declaration</em> — marks it as a pointer type: <code>int* p;</code><br>2. As an <em>operator</em> — dereferences (reads the value): <code>*p</code></div>
+<div class="section-hdr">Modifying via Pointer</div>
+<pre>int a = 10;
+int* p = &amp;a;
+*p = 99;        // changes 'a' through the pointer
+cout &lt;&lt; a;      // 99</pre>
+<div class="section-hdr">Pointer Arithmetic</div>
+<pre>int arr[] = {10, 20, 30};
+int* p = arr;       // points to arr[0]
+
+cout &lt;&lt; *p;         // 10
+cout &lt;&lt; *(p+1);     // 20  — moves one int forward in memory
+cout &lt;&lt; *(p+2);     // 30
+
+p++;                // advance pointer
+cout &lt;&lt; *p;         // 20</pre>
+<div class="section-hdr">Null Pointer</div>
+<pre>int* p = nullptr;   // C++11 — safe empty pointer (use this!)
+// int* p = NULL;   // old C style, avoid
+
+if (p != nullptr) {
+    cout &lt;&lt; *p;     // always check before dereferencing!
+}</pre>
+<div class="warn"><strong>Danger:</strong> Dereferencing a null or uninitialized pointer causes undefined behavior / crash.</div>
+<div class="section-hdr">Pointer to Pointer</div>
+<pre>int x = 5;
+int* p = &amp;x;
+int** pp = &amp;p;   // pointer to a pointer
+
+cout &lt;&lt; **pp;    // 5 — double dereference</pre>
+</div>`,
+
+ref:`<div class="lesson">
+<div class="tag blue">Core concept</div>
+<h2>References — <code>&amp;</code></h2>
+<div class="sub">A reference is an alias — another name for an existing variable</div>
+<p>Once bound, a reference <em>is</em> the variable — you can't rebind it or make it null.</p>
+<div class="section-hdr">Declaration</div>
+<pre>int x = 10;
+int&amp; ref = x;   // ref is now an alias for x
+
+ref = 99;
+cout &lt;&lt; x;      // 99 — x changed through ref!
+cout &lt;&lt; &amp;x;     // same address
+cout &lt;&lt; &amp;ref;   // same address — they're the same variable</pre>
+<div class="section-hdr">Pass-by-Reference</div>
+<pre>// Without reference — only copy is changed
+void addTen(int n) { n += 10; }
+
+// With reference — original is changed
+void addTenRef(int&amp; n) { n += 10; }
+
+int val = 5;
+addTen(val);       // val still 5
+addTenRef(val);    // val is now 15</pre>
+<div class="section-hdr">const Reference (read-only)</div>
+<pre>void print(const string&amp; s) {
+    // s is passed cheaply (no copy)
+    // but cannot be modified
+    cout &lt;&lt; s;
+}
+
+// Great for large objects — no copy, no modification</pre>
+<div class="section-hdr">Reference vs Pointer</div>
+<pre>// Reference                  Pointer
+int&amp; r = x;    // must init   int* p = &amp;x;  // can be null
+r = 20;        // just assign  *p = 20;      // must dereference
+               // can't rebind p = &amp;y;       // can point elsewhere</pre>
+<div class="note">Use <strong>references</strong> when you always have a valid object. Use <strong>pointers</strong> when you need null, rebinding, or dynamic memory.</div>
+</div>`,
+
+addr:`<div class="lesson">
+<div class="tag amber">Memory</div>
+<h2>Addresses &amp; Memory Layout</h2>
+<div class="sub">Every variable lives at a unique address in RAM</div>
+<div class="section-hdr">The Address-of Operator &amp;</div>
+<pre>int a = 10;
+double b = 3.14;
+char c = 'Z';
+
+cout &lt;&lt; &amp;a;   // e.g. 0x7ffd5e3c1a4c
+cout &lt;&lt; &amp;b;   // e.g. 0x7ffd5e3c1a50
+cout &lt;&lt; &amp;c;   // e.g. 0x7ffd5e3c1a58</pre>
+<div class="section-hdr">Stack vs Heap</div>
+<pre>void func() {
+    int x = 5;       // STACK — automatic, freed when func() ends
+    int* p = new int(99); // HEAP — manual, you must delete it
+    delete p;
+}
+
+// Stack: fast, limited size (~1-8 MB), auto-managed
+// Heap:  slower, large (GBs), you manage lifetime</pre>
+<div class="section-hdr">Pointer Size</div>
+<pre>// Pointers themselves have a size:
+cout &lt;&lt; sizeof(int*);    // 8 bytes on 64-bit systems
+cout &lt;&lt; sizeof(double*); // 8 bytes — ALL pointers same size
+cout &lt;&lt; sizeof(char*);   // 8 bytes</pre>
+<div class="section-hdr">Address Arithmetic Example</div>
+<pre>int arr[3] = {10, 20, 30};
+cout &lt;&lt; arr;       // address of arr[0], e.g. 0x1000
+cout &lt;&lt; arr+1;     // 0x1004 — +4 bytes (int = 4 bytes)
+cout &lt;&lt; arr+2;     // 0x1008
+
+// Arrays are just pointers to their first element!
+cout &lt;&lt; arr[1];    // same as *(arr+1) = 20</pre>
+<div class="note">On a 64-bit system: <code>int</code>=4 bytes, <code>double</code>=8 bytes, <code>char</code>=1 byte, <code>pointer</code>=8 bytes.</div>
+</div>`,
+
+thisptr:`<div class="lesson">
+<div class="tag green">OOP</div>
+<h2>The <code>this</code> Pointer</h2>
+<div class="sub">Every member function receives a hidden pointer to its own object</div>
+<p>When you call <code>obj.func()</code>, C++ secretly passes <code>&amp;obj</code> as <code>this</code> inside <code>func</code>.</p>
+<div class="section-hdr">Disambiguation (name conflict)</div>
+<pre>class Dog {
+    string name;
+public:
+    Dog(string name) {
+        this-&gt;name = name; // 'this-&gt;name' = member
+                           // 'name' alone = parameter
+    }
+};
+</pre>
+<div class="section-hdr">Returning *this — Method Chaining</div>
+<pre>class Builder {
+    int value = 0;
+public:
+    Builder&amp; add(int n)      { value += n; return *this; }
+    Builder&amp; multiply(int n) { value *= n; return *this; }
+    void show() { cout &lt;&lt; value &lt;&lt; endl; }
+};
+
+Builder b;
+b.add(5).multiply(3).add(2).show(); // 17 — chaining!</pre>
+<div class="section-hdr">this in Context</div>
+<pre>class Counter {
+    int count = 0;
+public:
+    void increment() {
+        count++;          // same as: this-&gt;count++
+    }
+    Counter* getThis() {
+        return this;      // returns pointer to self
+    }
+    bool isSame(Counter* other) {
+        return this == other; // compare addresses
+    }
+};</pre>
+<div class="note"><code>this</code> is a <em>const pointer</em> — you can't change what it points to, but you can change the object's members through it.</div>
+</div>`,
+
+dyn:`<div class="lesson">
+<div class="tag amber">Memory</div>
+<h2>Dynamic Memory Allocation</h2>
+<div class="sub">Allocate memory at runtime on the heap</div>
+<div class="section-hdr">new / delete — Single Object</div>
+<pre>int* p = new int(42);    // allocate one int on heap
+cout &lt;&lt; *p;              // 42
+delete p;                // FREE it — crucial!
+p = nullptr;             // good practice after delete</pre>
+<div class="section-hdr">new[] / delete[] — Arrays</div>
+<pre>int n = 5;
+int* arr = new int[n];   // heap array of 5 ints
+
+for (int i = 0; i &lt; n; i++)
+    arr[i] = i * 10;
+
+// ... use arr ...
+
+delete[] arr;            // MUST use delete[] for arrays!</pre>
+<div class="warn"><strong>Common mistakes:</strong><br>
+• Forgetting <code>delete</code> → memory leak (RAM fills up)<br>
+• Using <code>delete</code> on array (<code>delete[]</code> required) → undefined behavior<br>
+• Using pointer after <code>delete</code> → dangling pointer crash</div>
+<div class="section-hdr">Smart Pointers (Modern C++11+)</div>
+<pre>#include &lt;memory&gt;
+
+// unique_ptr — sole owner, auto-deletes
+unique_ptr&lt;int&gt; u = make_unique&lt;int&gt;(99);
+cout &lt;&lt; *u;  // 99
+// no delete needed — freed when u goes out of scope!
+
+// shared_ptr — shared ownership, ref-counted
+shared_ptr&lt;int&gt; s1 = make_shared&lt;int&gt;(7);
+shared_ptr&lt;int&gt; s2 = s1;  // both own it
+// freed when ALL shared_ptrs go out of scope</pre>
+<div class="note"><strong>Best practice:</strong> Prefer <code>make_unique</code> and <code>make_shared</code> over raw <code>new</code>. They prevent leaks automatically.</div>
+</div>`,
+
+inh:`<div class="lesson">
+<div class="tag green">OOP</div>
+<h2>Inheritance</h2>
+<div class="sub">Derived classes inherit members from a base class ("is-a" relationship)</div>
+<div class="section-hdr">Basic Inheritance</div>
+<pre>class Animal {           // Base class
+protected:
+    string name;
+public:
+    Animal(string n) : name(n) {}
+    void eat() { cout &lt;&lt; name &lt;&lt; " eats." &lt;&lt; endl; }
+};
+
+class Dog : public Animal {   // Derived class
+public:
+    Dog(string n) : Animal(n) {} // call base constructor
+    void bark() { cout &lt;&lt; name &lt;&lt; " barks!" &lt;&lt; endl; }
+};
+
+Dog d("Rex");
+d.eat();    // inherited from Animal
+d.bark();   // Dog's own method</pre>
+<div class="section-hdr">Access Specifiers</div>
+<pre>class Base {
+public:    int pub;    // accessible everywhere
+protected: int prot;  // accessible in Base + derived classes
+private:   int priv;  // accessible ONLY in Base
+};
+
+class Child : public Base {
+    void test() {
+        pub = 1;   // OK
+        prot = 2;  // OK (protected)
+        // priv = 3; // ERROR — private
+    }
+};</pre>
+<div class="section-hdr">Method Overriding</div>
+<pre>class Shape {
+public:
+    virtual void draw() {           // virtual = can be overridden
+        cout &lt;&lt; "Drawing shape" &lt;&lt; endl;
+    }
+};
+
+class Circle : public Shape {
+public:
+    void draw() override {          // override keyword — safety check
+        cout &lt;&lt; "Drawing circle" &lt;&lt; endl;
+    }
+};</pre>
+<div class="section-hdr">Constructor Chain</div>
+<pre>class Vehicle {
+public:
+    Vehicle(int speed) { cout &lt;&lt; "Vehicle: " &lt;&lt; speed &lt;&lt; endl; }
+};
+class Car : public Vehicle {
+public:
+    Car(int s, string brand) : Vehicle(s) {   // calls base first
+        cout &lt;&lt; "Car: " &lt;&lt; brand &lt;&lt; endl;
+    }
+};
+// Output: Vehicle: 120 \n Car: Toyota</pre>
+</div>`,
+
+poly:`<div class="lesson">
+<div class="tag green">OOP</div>
+<h2>Polymorphism</h2>
+<div class="sub">Same interface, different behavior — resolved at runtime</div>
+<div class="section-hdr">Runtime Polymorphism (virtual)</div>
+<pre>class Animal {
+public:
+    virtual void speak() { cout &lt;&lt; "..." &lt;&lt; endl; }
+    virtual ~Animal() {}    // ALWAYS virtual destructor!
+};
+
+class Cat : public Animal {
+public:
+    void speak() override { cout &lt;&lt; "Meow!" &lt;&lt; endl; }
+};
+
+class Dog : public Animal {
+public:
+    void speak() override { cout &lt;&lt; "Woof!" &lt;&lt; endl; }
+};
+
+Animal* a1 = new Cat();
+Animal* a2 = new Dog();
+a1-&gt;speak();   // Meow!  — decided at RUNTIME
+a2-&gt;speak();   // Woof!
+delete a1; delete a2;</pre>
+<div class="section-hdr">Abstract Classes &amp; Pure Virtual</div>
+<pre>class Shape {
+public:
+    virtual double area() = 0;  // pure virtual — MUST override
+    virtual ~Shape() {}
+};
+
+class Circle : public Shape {
+    double r;
+public:
+    Circle(double r) : r(r) {}
+    double area() override { return 3.14159 * r * r; }
+};
+
+// Shape s;  // ERROR — can't instantiate abstract class
+Shape* s = new Circle(5.0);
+cout &lt;&lt; s-&gt;area();  // 78.54</pre>
+<div class="section-hdr">Compile-time Polymorphism (overloading)</div>
+<pre>int add(int a, int b)       { return a + b; }
+double add(double a, double b) { return a + b; }
+string add(string a, string b) { return a + b; }
+
+add(1, 2);           // int version
+add(1.5, 2.5);       // double version
+add("Hi", " C++");   // string version</pre>
+<div class="note">Runtime polymorphism needs <code>virtual</code> + base class pointer/reference. Compile-time polymorphism is just function overloading — decided at compile time.</div>
+</div>`,
+
+vtable:`<div class="lesson">
+<div class="tag green">OOP</div><div class="tag amber">Internals</div>
+<h2>vtable &amp; Virtual Dispatch</h2>
+<div class="sub">How C++ implements runtime polymorphism under the hood</div>
+<div class="section-hdr">What is a vtable?</div>
+<p>When a class has <code>virtual</code> functions, the compiler creates a hidden <strong>vtable</strong> (virtual function table) — an array of function pointers, one per virtual function.</p>
+<p>Each object of that class gets a hidden <strong>vptr</strong> (virtual pointer) — a pointer to its class's vtable.</p>
+<div class="section-hdr">How virtual dispatch works</div>
+<pre>class Animal {
+public:
+    virtual void speak() { cout &lt;&lt; "..." &lt;&lt; endl; }
+};
+class Dog : public Animal {
+public:
+    void speak() override { cout &lt;&lt; "Woof!" &lt;&lt; endl; }
+};
+
+// Memory layout of a Dog object:
+// [ vptr ] --&gt; Dog's vtable: [ &amp;Dog::speak ]
+// [ ... other members ... ]
+
+Animal* a = new Dog();
+a-&gt;speak();
+// CPU: read vptr from *a
+//      look up speak in vtable
+//      call Dog::speak  =&gt; "Woof!"</pre>
+<div class="section-hdr">Virtual Destructor — why it matters</div>
+<pre>class Base {
+public:
+    ~Base() { cout &lt;&lt; "~Base" &lt;&lt; endl; }  // NOT virtual!
+};
+class Derived : public Base {
+public:
+    ~Derived() { cout &lt;&lt; "~Derived" &lt;&lt; endl; }
+};
+
+Base* b = new Derived();
+delete b;  // ONLY ~Base called! Derived destructor skipped!
+           // =&gt; memory/resource leak
+
+// FIX: make destructor virtual in Base
+virtual ~Base() { ... }</pre>
+<div class="section-hdr">override &amp; final</div>
+<pre>class A {
+    virtual void foo() {}
+    virtual void bar() {}
+};
+class B : public A {
+    void foo() override {}  // override — compiler checks it exists in A
+    void bar() final {}     // final — no further overriding allowed
+};
+class C : public B {
+    // void bar() override {} // ERROR — bar is final in B
+};</pre>
+<div class="warn"><strong>Rule:</strong> If a class has ANY virtual function, its destructor must also be <code>virtual</code>.</div>
+</div>`
+};
+
+const Q = {
+q_ptr:[
+  {q:"What does the * operator do when used on a pointer variable (not in a declaration)?",opts:["Declares a new pointer","Returns the memory address","Dereferences — gives the value at that address","Multiplies the pointer value"],a:2,exp:"The * operator in an expression context dereferences a pointer — it follows the address and gives you the value stored there. In a declaration like <code>int* p</code>, * just means 'this is a pointer type'."},
+  {q:"What is the output?\n\nint x = 5;\nint* p = &x;\n*p = 20;\ncout << x;",opts:["5","20","Address of x","Compiler error"],a:1,exp:"p holds the address of x. *p = 20 writes 20 to that address — directly modifying x. So x becomes 20."},
+  {q:"Which is the correct way to declare a null pointer in modern C++?",opts:["int* p = 0;","int* p = NULL;","int* p = nullptr;","int* p;"],a:2,exp:"<code>nullptr</code> is the C++11 type-safe null pointer literal. <code>NULL</code> is a C macro (usually 0). An uninitialized <code>int* p;</code> is dangerous — it points to a random address."},
+  {q:"Given int arr[] = {1,2,3}; and int* p = arr; what does *(p+2) give?",opts:["1","2","3","Undefined behavior"],a:2,exp:"p points to arr[0]. p+2 advances 2 integers forward (8 bytes on most systems), pointing to arr[2] which holds 3. *(p+2) dereferences it to give 3."},
+  {q:"What is a dangling pointer?",opts:["A pointer that is null","A pointer to stack memory","A pointer that points to memory that has been freed/deleted","A pointer to a pointer"],a:2,exp:"A dangling pointer points to memory that was previously valid but has since been freed (via delete) or gone out of scope. Using it causes undefined behavior. Always set p = nullptr after deleting."}
+],
+q_mem:[
+  {q:"Which statement correctly allocates an array of 10 ints on the heap?",opts:["int arr[10];","int* arr = new int(10);","int* arr = new int[10];","int* arr = malloc(10);"],a:2,exp:"<code>new int[10]</code> allocates an array of 10 ints on the heap. <code>new int(10)</code> allocates a single int initialized to 10. <code>int arr[10]</code> is stack allocation. <code>malloc</code> is C-style."},
+  {q:"What is wrong with this code?\n\nint* p = new int[5];\ndelete p;",opts:["Nothing is wrong","Should use delete[] p","Should use free(p)","p is not initialized"],a:1,exp:"Arrays allocated with <code>new[]</code> MUST be freed with <code>delete[]</code>. Using <code>delete</code> (without []) on an array is undefined behavior — only the first element's destructor runs."},
+  {q:"What does unique_ptr guarantee?",opts:["Multiple owners can share it","It can never be null","Only one owner; auto-deletes when out of scope","It uses reference counting"],a:2,exp:"<code>unique_ptr</code> enforces sole ownership — it cannot be copied, only moved. When the unique_ptr goes out of scope or is reset, the managed object is automatically deleted. No manual delete needed."},
+  {q:"What is a memory leak?",opts:["Accessing freed memory","Allocating heap memory and never freeing it","Stack overflow","Using nullptr"],a:1,exp:"A memory leak occurs when you allocate memory on the heap (new) but never free it (delete). The program's memory usage grows over time. Smart pointers like unique_ptr prevent this automatically."},
+  {q:"The 'this' pointer inside a member function points to:",opts:["The class definition","The base class","The current object instance","The vtable"],a:2,exp:"<code>this</code> is a hidden pointer automatically passed to every non-static member function. It points to the specific object instance on which the method was called."}
+],
+q_oop:[
+  {q:"What makes a class abstract in C++?",opts:["Using the abstract keyword","Having a private constructor","Having at least one pure virtual function (= 0)","Inheriting from another class"],a:2,exp:"A class becomes abstract when it declares at least one pure virtual function: <code>virtual void foo() = 0;</code>. Abstract classes cannot be instantiated — they define an interface that derived classes must implement."},
+  {q:"What is the output?\n\nclass A { public: virtual void f() { cout<<'A'; } };\nclass B : public A { public: void f() override { cout<<'B'; } };\nA* p = new B();\np->f();",opts:["A","B","AB","Compiler error"],a:1,exp:"Because f() is virtual, C++ uses the vtable to look up the actual type at runtime. p holds a B object, so B::f() is called, printing 'B'. This is runtime polymorphism."},
+  {q:"In public inheritance, protected members of the base become:",opts:["private in derived","public in derived","protected in derived","inaccessible"],a:2,exp:"With public inheritance, the access level of inherited members is preserved: public stays public, protected stays protected. Private members are inherited but remain inaccessible to the derived class."},
+  {q:"Why must you declare a virtual destructor in a base class?",opts:["To allow the class to be instantiated","To prevent memory leaks when deleting via base pointer","To enable function overloading","Required by the compiler"],a:1,exp:"When you delete a derived object through a base class pointer, without a virtual destructor only the base destructor runs — the derived destructor is skipped. This causes resource leaks. Virtual destructors ensure the correct destructor chain is called."},
+  {q:"What is the difference between function overloading and overriding?",opts:["No difference","Overloading: same name different params (compile-time). Overriding: virtual, different class hierarchy (runtime)","Overriding: same name different params. Overloading: virtual functions","Overloading requires inheritance"],a:1,exp:"Overloading is compile-time polymorphism — same function name, different parameter types/count, in the same scope. Overriding is runtime polymorphism — same signature in a derived class, replacing a virtual function from the base class."}
+],
+q_mix:[
+  {q:"What does ** mean in  int** pp?",opts:["Multiply two ints","Pointer to a pointer to int","Double the value","Power operator"],a:1,exp:"<code>int**</code> is a pointer to a pointer to int. To get the final value you dereference twice: <code>**pp</code>."},
+  {q:"What is the output?\n\nint a = 1, b = 2;\nint& r = a;\nr = b;\ncout << a;",opts:["1","2","Address of b","Undefined"],a:1,exp:"r is a reference (alias) to a. <code>r = b</code> assigns b's value (2) to a through the reference. It does NOT rebind r to b — references cannot be rebound after initialization."},
+  {q:"Which smart pointer should you use for a resource with one unique owner?",opts:["shared_ptr","weak_ptr","unique_ptr","raw pointer"],a:2,exp:"<code>unique_ptr</code> is ideal for sole ownership. It's zero overhead over a raw pointer and automatically deletes the resource when it goes out of scope. Use shared_ptr only when multiple owners need to share the resource."},
+  {q:"What keyword tells the compiler a function CAN be overridden in derived classes?",opts:["override","virtual","abstract","final"],a:1,exp:"The <code>virtual</code> keyword on a base class function enables runtime polymorphism — derived classes can provide their own implementation. The <code>override</code> keyword in derived classes confirms you intend to override a virtual function (safety check)."},
+  {q:"Inside a class method, what is 'this'?",opts:["A keyword to call base class constructor","A pointer to the current object","A reference to the class type","The return value"],a:1,exp:"<code>this</code> is an implicit pointer passed to every non-static member function. It holds the address of the object the method was called on. You use it as <code>this->member</code> to access members explicitly."},
+  {q:"What does 'override' keyword do in C++11?",opts:["Makes function non-virtual","Tells compiler to optimize","Ensures function overrides a virtual function — compiler error if not","Creates a new virtual function"],a:2,exp:"The <code>override</code> specifier tells the compiler 'I intend to override a virtual function from the base class.' If no matching virtual function exists in the base, the compiler reports an error — catching typos and signature mismatches."}
+]
+};
+
+let scores = {};
+let qstate = {};
+
+function show(btn) {
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const t = btn.dataset.t;
+  document.getElementById('topbar-title').textContent = btn.textContent.trim();
+  const sp = document.getElementById('sp');
+  if (t.startsWith('q_')) {
+    if (!scores[t]) scores[t] = {c:0,tot:0};
+    if (!qstate[t]) qstate[t] = {idx:0, done:[]};
+    sp.style.display='flex';
+    renderQuiz(t);
+  } else {
+    sp.style.display='none';
+    document.getElementById('content').innerHTML = L[t] || '<div class="ph"><i class="ti ti-x"></i><p>Content not found</p></div>';
+  }
+}
+
+function renderQuiz(t) {
+  const qs = Q[t];
+  const sc = scores[t];
+  document.getElementById('sd').textContent = sc.c + ' / ' + sc.tot;
+  let html = '';
+  qs.forEach((q,i) => {
+    const done = qstate[t].done.includes(i);
+    html += `<div class="qbox" id="qb${t}${i}">
+      <div class="qnum">Question ${i+1} of ${qs.length}</div>
+      <div class="qtxt">${escHtml(q.q)}</div>
+      ${q.opts.map((o,j)=>`<button class="opt" id="opt${t}${i}${j}" onclick="answer('${t}',${i},${j})" ${done?'disabled':''}>${'ABCD'[j]}) ${escHtml(o)}</button>`).join('')}
+      <div class="exp" id="exp${t}${i}">${q.exp}</div>
+    </div>`;
+  });
+  html += `<button class="abtn" style="margin-bottom:16px" onclick="resetQuiz('${t}')"><i class="ti ti-refresh" aria-hidden="true"></i>Reset quiz</button>`;
+  document.getElementById('content').innerHTML = html;
+  qstate[t].done.forEach(i => restoreQ(t, i, qs[i]));
+}
+
+function restoreQ(t, i, q) {
+  const prev = qstate[t].chosen?.[i];
+  if (prev === undefined) return;
+  const correct = q.a;
+  q.opts.forEach((_,j) => {
+    const btn = document.getElementById('opt'+t+i+j);
+    if (!btn) return;
+    btn.disabled = true;
+    if (j === correct) btn.classList.add('ok');
+    else if (j === prev && j !== correct) btn.classList.add('bad');
+  });
+  const exp = document.getElementById('exp'+t+i);
+  if (exp) exp.style.display = '';
+}
+
+function answer(t, qi, chosen) {
+  const q = Q[t][qi];
+  if (qstate[t].done.includes(qi)) return;
+  qstate[t].done.push(qi);
+  if (!qstate[t].chosen) qstate[t].chosen = {};
+  qstate[t].chosen[qi] = chosen;
+  const correct = q.a;
+  if (chosen === correct) scores[t].c++;
+  scores[t].tot++;
+  document.getElementById('sd').textContent = scores[t].c + ' / ' + scores[t].tot;
+  q.opts.forEach((_,j) => {
+    const btn = document.getElementById('opt'+t+qi+j);
+    btn.disabled = true;
+    if (j === correct) btn.classList.add('ok');
+    else if (j === chosen && j !== correct) btn.classList.add('bad');
+  });
+  const exp = document.getElementById('exp'+t+qi);
+  if (exp) exp.style.display = '';
+}
+
+function resetQuiz(t) {
+  scores[t] = {c:0, tot:0};
+  qstate[t] = {idx:0, done:[], chosen:{}};
+  renderQuiz(t);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+</script>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive C++ Learning Hub — comprehensive lessons and quizzes on OOP, pointers, memory, templates, STL and more">
+  <title>C++ Learning Hub — Interactive OOP Mastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon"><i class="ti ti-code"></i></div>
+          <div>
+            <h1 class="logo-title">C++ Hub</h1>
+            <span class="logo-sub">Interactive Learning</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="searchInput" placeholder="Search topics..." oninput="filterTopics(this.value)">
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <div class="nav-group">
+          <h3 class="nav-group-title"><i class="ti ti-book"></i> Fundamentals</h3>
+          <button class="nav-btn" data-t="classes" onclick="showTopic(this)"><i class="ti ti-box"></i>Classes & Objects</button>
+          <button class="nav-btn" data-t="encap" onclick="showTopic(this)"><i class="ti ti-lock"></i>Encapsulation</button>
+          <button class="nav-btn" data-t="ptr" onclick="showTopic(this)"><i class="ti ti-pointer"></i>Pointers</button>
+          <button class="nav-btn" data-t="ref" onclick="showTopic(this)"><i class="ti ti-link"></i>References</button>
+          <button class="nav-btn" data-t="addr" onclick="showTopic(this)"><i class="ti ti-map-pin"></i>Memory Layout</button>
+        </div>
+
+        <div class="nav-group">
+          <h3 class="nav-group-title"><i class="ti ti-hierarchy"></i> OOP Concepts</h3>
+          <button class="nav-btn" data-t="inh" onclick="showTopic(this)"><i class="ti ti-git-branch"></i>Inheritance</button>
+          <button class="nav-btn" data-t="poly" onclick="showTopic(this)"><i class="ti ti-transform"></i>Polymorphism</button>
+          <button class="nav-btn" data-t="vtable" onclick="showTopic(this)"><i class="ti ti-table"></i>vtable & Virtual</button>
+          <button class="nav-btn" data-t="opover" onclick="showTopic(this)"><i class="ti ti-math-function"></i>Operator Overloading</button>
+          <button class="nav-btn" data-t="thisptr" onclick="showTopic(this)"><i class="ti ti-circle-dot"></i>this Pointer</button>
+        </div>
+
+        <div class="nav-group">
+          <h3 class="nav-group-title"><i class="ti ti-rocket"></i> Advanced</h3>
+          <button class="nav-btn" data-t="copyctor" onclick="showTopic(this)"><i class="ti ti-copy"></i>Copy Constructor</button>
+          <button class="nav-btn" data-t="static" onclick="showTopic(this)"><i class="ti ti-pin"></i>Static Members</button>
+          <button class="nav-btn" data-t="friend" onclick="showTopic(this)"><i class="ti ti-users"></i>Friend Functions</button>
+          <button class="nav-btn" data-t="multinh" onclick="showTopic(this)"><i class="ti ti-git-merge"></i>Multiple Inheritance</button>
+          <button class="nav-btn" data-t="dyn" onclick="showTopic(this)"><i class="ti ti-database"></i>Dynamic Memory</button>
+          <button class="nav-btn" data-t="templates" onclick="showTopic(this)"><i class="ti ti-template"></i>Templates</button>
+          <button class="nav-btn" data-t="stl" onclick="showTopic(this)"><i class="ti ti-stack-2"></i>STL Containers</button>
+          <button class="nav-btn" data-t="exceptions" onclick="showTopic(this)"><i class="ti ti-alert-triangle"></i>Exception Handling</button>
+        </div>
+
+        <div class="nav-group">
+          <h3 class="nav-group-title"><i class="ti ti-trophy"></i> Quizzes</h3>
+          <button class="nav-btn quiz-btn" data-t="q_fundamentals" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Fundamentals</button>
+          <button class="nav-btn quiz-btn" data-t="q_ptr" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Pointers & Refs</button>
+          <button class="nav-btn quiz-btn" data-t="q_mem" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Memory</button>
+          <button class="nav-btn quiz-btn" data-t="q_oop" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: OOP</button>
+          <button class="nav-btn quiz-btn" data-t="q_copyctor" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Copy Constructor</button>
+          <button class="nav-btn quiz-btn" data-t="q_static" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Static Members</button>
+          <button class="nav-btn quiz-btn" data-t="q_friend" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Friend Functions</button>
+          <button class="nav-btn quiz-btn" data-t="q_multinh" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Multiple Inheritance</button>
+          <button class="nav-btn quiz-btn" data-t="q_advanced" onclick="showTopic(this)"><i class="ti ti-help-hexagon"></i>Quiz: Advanced</button>
+          <button class="nav-btn quiz-btn challenge" data-t="q_mix" onclick="showTopic(this)"><i class="ti ti-flame"></i>Mixed Challenge</button>
+        </div>
+
+        <div class="nav-group">
+          <h3 class="nav-group-title"><i class="ti ti-code-circle"></i> Code Snippet Challenge</h3>
+          <button class="nav-btn quiz-btn challenge" data-t="q_snippets" onclick="showTopic(this)"><i class="ti ti-device-laptop"></i>Snippet Challenge</button>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="progress-card">
+          <div class="progress-label">
+            <span>Overall Progress</span>
+            <span id="progressPct">0%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="main">
+      <header id="topbar">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+        <h2 id="topbar-title">Welcome</h2>
+        <div class="topbar-right">
+          <div class="score-pill" id="scorePill" style="display:none">
+            <i class="ti ti-star-filled"></i>
+            <span>Score: <strong id="scoreDisplay">0 / 0</strong></span>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="ti ti-sun" id="themeIcon"></i>
+          </button>
+        </div>
+      </header>
+
+      <div id="content">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen">
+          <div class="welcome-hero">
+            <div class="hero-icon-wrap">
+              <div class="hero-icon"><i class="ti ti-code"></i></div>
+              <div class="hero-ring"></div>
+            </div>
+            <h2>C++ Learning Hub</h2>
+            <p>Master Object-Oriented Programming with interactive lessons & quizzes</p>
+          </div>
+          <div class="feature-grid">
+            <div class="feature-card" onclick="document.querySelector('[data-t=classes]').click()">
+              <div class="feature-icon blue"><i class="ti ti-book"></i></div>
+              <h3>14 Lessons</h3>
+              <p>From basics to advanced C++ concepts</p>
+            </div>
+            <div class="feature-card" onclick="document.querySelector('[data-t=q_fundamentals]').click()">
+              <div class="feature-icon purple"><i class="ti ti-trophy"></i></div>
+              <h3>6 Quizzes</h3>
+              <p>Test your understanding interactively</p>
+            </div>
+            <div class="feature-card" onclick="document.querySelector('[data-t=ptr]').click()">
+              <div class="feature-icon green"><i class="ti ti-code"></i></div>
+              <h3>Code Examples</h3>
+              <p>Real, runnable C++ snippets</p>
+            </div>
+            <div class="feature-card" onclick="document.querySelector('[data-t=templates]').click()">
+              <div class="feature-icon amber"><i class="ti ti-bulb"></i></div>
+              <h3>Deep Explanations</h3>
+              <p>Understand the "why" behind every concept</p>
+            </div>
+          </div>
+          <p class="welcome-hint"><i class="ti ti-arrow-left"></i> Pick a topic from the sidebar to begin</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="lessons.js"></script>
+  <script src="quizzes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
